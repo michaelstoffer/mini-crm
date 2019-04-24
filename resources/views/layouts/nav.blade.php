@@ -32,6 +32,11 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            @can ('create', 'App\User')
+                                <a class="dropdown-item" href="/users">Manage Users</a>
+                            @endcan
+                            <a class="dropdown-item" href="/api-tokens">Manage API Tokens</a>
+
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
 
-    use Notifiable, HasRoles, HasManagers;
+    use HasApiTokens, Notifiable, HasRoles, HasManagers;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +38,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The relationships to always eager-load.
+     *
+     * @var array
+     */
+    protected $with = ['roles', 'companies'];
+
+    /**
+     *  The path to the company.
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return "/users/{$this->id}";
+    }
 
     /**
      * The roles that belong to the user.

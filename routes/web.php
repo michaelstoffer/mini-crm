@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/api-tokens', 'APIController@index');
 
     Route::get('companies', 'CompanyController@index')->name('companies');
     Route::get('companies/create', 'CompanyController@create');
@@ -36,4 +37,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('companies/{company}/employees/{employee}/edit', 'EmployeeController@edit');
     Route::patch('companies/{company}/employees/{employee}', 'EmployeeController@update');
     Route::post('companies/{company}/employees', 'EmployeeController@store');
+});
+
+Route::group(['middleware' => 'can:create,App\User'], function () {
+    Route::get('users', 'UserController@index');
+    Route::get('users/create', 'UserController@create');
+    Route::get('users/{user}', 'UserController@show');
+    Route::get('users/{user}/edit', 'UserController@edit');
+    Route::patch('users/{user}', 'UserController@update');
+    Route::post('users', 'UserController@store');
+    Route::patch('users/{user}/add-role', 'UserController@addRole');
+    Route::patch('users/{user}/add-company', 'UserController@addCompany');
 });
